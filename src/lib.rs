@@ -21,15 +21,15 @@ lazy_static{
 
 
 pub fn start_blog(listener: TcpListener) -> Result <Server, std::io::Error> {
-    let server = HttpServer::new(move ||{
+    let server = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(TEMPLATES.clone()))
             .wrap(middleware::Logger::default())
             .route("/health", web::get().to(HttpResponse::Ok))
             .service(handlers::index)
     })
-    .listen(listener)?
-    .run();
+        .listen(listener)?
+        .run();
 
     Ok(srv)
-
+}
