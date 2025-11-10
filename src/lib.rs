@@ -1,3 +1,4 @@
+use actix_files::Files;
 use std::net::TcpListener;
 use actix_web::{dev::Server, web, App, HttpResponse, HttpServer, middleware};
 use tera::Tera;
@@ -23,10 +24,11 @@ lazy_static! {
 
 
 pub fn start_blog(listener: TcpListener) -> Result <Server, std::io::Error> {
-    let srv = HttpServer::new(move ||{
+    let srv = HttpServer::new(move || {
         App::new()
             .app_data(web::Data::new(TEMPLATES.clone()))
             .wrap(middleware::Logger::default())
+            .service(Files::new(("/static", "static/").use_last_modified(true))
             .route("/health", web::get().to(HttpResponse::Ok))
             .service(handlers::index)
     })
