@@ -10,7 +10,7 @@ extern crate lazy_static;
 
 lazy_static! {
     pub static ref TEMPLATES: Tera = {
-        let mut tera = match Tera::new("templates/**/*.html") {
+        let mut tera = match Tera::new("src/templates/**/*.html") {
             Ok(t) => t,
             Err(e) => {
                 println!("Parsing error(s): {}", e);
