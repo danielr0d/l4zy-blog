@@ -54,17 +54,17 @@ pub struct Frontmatter {
 pub async fn index(templates: web::Data<tera::Tera>) -> impl Responder {
     let mut context = tera::Context::new();
 
-    let frontmatters = vec![Frontmatter{
-        tags: vec!["Rusty".to_string(), "Test".to_string()],
-        title: "Test posts".to_string(),
-        file_name: "test_posts.md".to_string(),
-        description: "a tal da descricao".to_string(),
-        posted: "2025-10-10".to_string(),
-        author: "danieo".to_string(),
-        estimated_reading_time: 13,
-        order: 1,
+    let mut frontmatters = match find_all_frontmatters() {
+        Ok(fm) => fm,
+        Err(e) => {
+            println!("{:?}", e);
+            return HttpResponse::InternalServerError()
+                .content_type("text/html")
+                .body("<p>Me descula por ser burro</p>");
+        }
+    };
 
-    }];
+    frontmatters.sort_by(|a, b| b.order.cmp(&a.oder));
 
     context.insert("posts", &frontmatters);
 
