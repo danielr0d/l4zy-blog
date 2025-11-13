@@ -60,7 +60,7 @@ pub async fn index(templates: web::Data<tera::Tera>) -> impl Responder {
             println!("{:?}", e);
             return HttpResponse::InternalServerError()
                 .content_type("text/html")
-                .body("<p>Me descula por ser burro</p>");
+                .body("<p>Me desculpa por ser burro</p>");
         }
     };
 
