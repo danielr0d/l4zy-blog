@@ -3,7 +3,7 @@ use actix_web::{web, get, Responder, HttpResponse};
 use pulldown_cmark::{Options, Parser, html};
 use super::home_handler::Frontmatter;
 
-fn extract_markdown(post_name:: &str) -> Result <String, Error> {
+fn extract_markdown(post_name: &str) -> Result<String, Error> {
     let markdown = match fs::read_to_string(format!("./posts/{}/post.md", post_name)) {
         Ok(markdown) => markdown,
         Err(e) => {
@@ -16,7 +16,8 @@ fn extract_markdown(post_name:: &str) -> Result <String, Error> {
 }
 
 fn extract_frontmatter(post_name: &str) ->  Result<Frontmatter, Error> {
-    let frontmatter_input = match fs::read_to_string(format!("./posts/{}/post_frontmatter.toml",, post_name)) {
+    let frontmatter_input = match fs::read_to_string(format!("./posts/{}/post_frontmatter.toml", post_name)) {
+        Ok(s) => s,
         Err(e) => {
             println!("{:?}", e);
             return Err(e)
@@ -36,7 +37,7 @@ fn extract_frontmatter(post_name: &str) ->  Result<Frontmatter, Error> {
 
 #[get("/posts/{post_name}")]
 pub async fn post(
-    tmpl: web::Data<tera::Terra>,
+    tmpl: web::Data<tera::Tera>,
     post_name: web::Path<String>,
     ) -> impl Responder {
     let mut context = tera::Context::new();
