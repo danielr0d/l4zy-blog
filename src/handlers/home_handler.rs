@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::{fs, io::Error};
 use ignore::WalkBuilder;
 
-fn find_all_frontmatter() -> Result<Vec<Frontmatter>, std::io::Error> {
+fn find_all_frontmatters() -> Result<Vec<Frontmatter>, std::io::Error> {
     let mut t = ignore::types::TypesBuilder::new();
     t.add_defaults();
     let toml = match t.select("toml").build() {
@@ -64,7 +64,7 @@ pub async fn index(templates: web::Data<tera::Tera>) -> impl Responder {
         }
     };
 
-    frontmatters.sort_by(|a, b| b.order.cmp(&a.oder));
+    frontmatters.sort_by(|a, b| b.order.cmp(&a.order));
 
     context.insert("posts", &frontmatters);
 
